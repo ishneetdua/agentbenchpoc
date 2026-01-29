@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Generation Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .file-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .file-upload.dragover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .file-list {
+            margin-top: 15px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .file-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+        
+        .file-name {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .file-size {
+            font-size: 12px;
+            color: #999;
+            margin-right: 10px;
+        }
+        
+        .remove-file {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.processing {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .download-links {
+            margin-top: 15px;
+        }
+        
+        .download-link {
+            display: block;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .download-link:hover {
+            background: #e9ecef;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Website Generation Service</h1>
+        <p class="subtitle">Submit your website requirements and get a professional website in minutes</p>
+        
+        <form id="jobForm">
+            <div class="form-group">
+                <label for="customerId">Your Email or Customer ID</label>
+                <input type="text" id="customerId" required placeholder="customer@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="jobDescription">Website Requirements</label>
+                <textarea id="jobDescription" required placeholder="Describe your website requirements...
+
+Example:
+- 3 page website (Home, About, Contact)
+- Modern design with hero section
+- Contact form
+- Mobile responsive"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Design Mockups / Images (Optional)</label>
+                <div class="file-upload" id="fileUpload">
+                    <p>📎 Click to upload or drag and drop</p>
+                    <p style="font-size: 12px; color: #999; margin-top: 5px;">PNG, JPG up to 5MB each</p>
+                    <input type="file" id="fileInput" multiple accept="image/*">
+                </div>
+                <div class="file-list" id="fileList"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Generate Website
+            </button>
+        </form>
+        
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+        const API_ENDPOINT = 'https://4mh4zy4oid.execute-api.us-east-1.amazonaws.com/prod/generate';
+        const API_KEY = 'FkGowDz7e782CYybkjTv25ZO0ZkCTlCYthfLrGJj';
+        
+        let selectedFiles = [];
+        
+        // File upload handling
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        
+        fileUpload.addEventListener('click', () => fileInput.click());
+        
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('dragover');
+        });
+        
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('dragover');
+        });
+        
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+        
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024) {
+                    selectedFiles.push(file);
+                    displayFile(file);
+                } else {
+                    alert(`${file.name} is not a valid image or exceeds 5MB`);
+                }
+            });
+        }
+        
+        function displayFile(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                fileItem.innerHTML = `
+                    <img src="${e.target.result}" alt="${file.name}">
+                    <span class="file-name">${file.name}</span>
+                    <span class="file-size">${(file.size / 1024).toFixed(1)} KB</span>
+                    <button type="button" class="remove-file" onclick="removeFile('${file.name}')">Remove</button>
+                `;
+            };
+            reader.readAsDataURL(file);
+            
+            fileList.appendChild(fileItem);
+        }
+        
+        window.removeFile = function(filename) {
+            selectedFiles = selectedFiles.filter(f => f.name !== filename);
+            renderFileList();
+        };
+        
+        function renderFileList() {
+            fileList.innerHTML = '';
+            selectedFiles.forEach(file => displayFile(file));
+        }
+        
+        // Form submission
+        document.getElementById('jobForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const status = document.getElementById('status');
+            const customerId = document.getElementById('customerId').value;
+            const jobDescription = document.getElementById('jobDescription').value;
+            
+            // Show processing status
+            status.className = 'status processing';
+            status.style.display = 'block';
+            status.innerHTML = '<div class="spinner"></div><p>Processing your request... This may take up to 15 minutes.</p>';
+            submitBtn.disabled = true;
+            
+            try {
+                // Encode images to base64
+                const attachments = await Promise.all(
+                    selectedFiles.map(file => new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const base64 = reader.result.split(',')[1];
+                            resolve({
+                                filename: file.name,
+                                content: base64,
+                                type: file.type
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    }))
+                );
+                
+                // Send request
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        job_description: jobDescription,
+                        attachments: attachments,
+                        customer_id: customerId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Success
+                    status.className = 'status success';
+                    let html = `
+                        <h3>✅ Website Generated Successfully!</h3>
+                        <p><strong>Request ID:</strong> ${result.request_id}</p>
+                        <p><strong>Project ID:</strong> ${result.project_id}</p>
+                    `;
+                    
+                    if (result.files && Object.keys(result.files).length > 0) {
+                        html += '<div class="download-links"><h4>Download Your Website:</h4>';
+                        for (const [filename, url] of Object.entries(result.files)) {
+                            html += `<a href="${url}" class="download-link" target="_blank">📄 ${filename}</a>`;
+                        }
+                        html += `</div><p style="margin-top: 10px; font-size: 12px; color: #666;">Links expire in ${result.expires_in}</p>`;
+                    }
+                    
+                    status.innerHTML = html;
+                } else {
+                    throw new Error(result.error || 'Unknown error');
+                }
+                
+            } catch (error) {
+                status.className = 'status error';
+                status.innerHTML = `<h3>❌ Error</h3><p>${error.message}</p>`;
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
