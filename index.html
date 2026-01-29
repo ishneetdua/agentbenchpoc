@@ -262,7 +262,7 @@ Example:
 
     <script>
         const API_ENDPOINT = 'https://4mh4zy4oid.execute-api.us-east-1.amazonaws.com/prod/generate';
-        const API_KEY = 'FkGowDz7e782CYybkjTv25ZO0ZkCTlCYthfLrGJj';
+        //const API_KEY = 'FkGowDz7e782CYybkjTv25ZO0ZkCTlCYthfLrGJj';
         
         let selectedFiles = [];
         
@@ -368,7 +368,6 @@ Example:
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': API_KEY
                     },
                     body: JSON.stringify({
                         job_description: jobDescription,
