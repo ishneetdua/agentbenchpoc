@@ -15,28 +15,31 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
         }
         
         .container {
-            max-width: 800px;
-            margin: 0 auto;
             background: white;
-            border-radius: 12px;
+            border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
             padding: 40px;
         }
         
         h1 {
             color: #333;
             margin-bottom: 10px;
-            font-size: 32px;
+            font-size: 28px;
         }
         
         .subtitle {
             color: #666;
             margin-bottom: 30px;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .form-group {
@@ -51,47 +54,56 @@
             font-size: 14px;
         }
         
-        textarea, input[type="text"] {
+        input[type="text"],
+        textarea {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 14px;
-            font-family: inherit;
             transition: border-color 0.3s;
+            font-family: inherit;
         }
         
-        textarea:focus, input[type="text"]:focus {
+        input[type="text"]:focus,
+        textarea:focus {
             outline: none;
             border-color: #667eea;
         }
         
         textarea {
-            min-height: 150px;
+            min-height: 120px;
             resize: vertical;
         }
         
-        .file-upload {
+        .upload-area {
             border: 2px dashed #e0e0e0;
             border-radius: 8px;
             padding: 30px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            background: #f9f9f9;
         }
         
-        .file-upload:hover {
+        .upload-area:hover {
             border-color: #667eea;
-            background: #f8f9ff;
+            background: #f0f0ff;
         }
         
-        .file-upload.dragover {
+        .upload-area.dragover {
             border-color: #667eea;
-            background: #f0f2ff;
+            background: #e8e8ff;
         }
         
-        input[type="file"] {
-            display: none;
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            color: #666;
+            font-size: 14px;
         }
         
         .file-list {
@@ -101,37 +113,23 @@
         .file-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 10px;
             background: #f5f5f5;
             border-radius: 6px;
             margin-bottom: 8px;
         }
         
-        .file-item img {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-right: 12px;
-        }
-        
         .file-name {
-            flex: 1;
-            font-size: 14px;
+            font-size: 13px;
             color: #333;
         }
         
-        .file-size {
-            font-size: 12px;
-            color: #999;
-            margin-right: 10px;
-        }
-        
-        .remove-file {
+        .file-remove {
             background: #ff4444;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
@@ -179,10 +177,10 @@
             border: 1px solid #f5c6cb;
         }
         
-        .status.processing {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
+        .status.loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
         }
         
         .download-links {
@@ -203,58 +201,38 @@
         .download-link:hover {
             background: #e9ecef;
         }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🚀 Website Generation Service</h1>
-        <p class="subtitle">Submit your website requirements and get a professional website in minutes</p>
+        <p class="subtitle">Describe your website and upload any design mockups or images</p>
         
-        <form id="jobForm">
+        <form id="websiteForm">
             <div class="form-group">
-                <label for="customerId">Your Email or Customer ID</label>
-                <input type="text" id="customerId" required placeholder="customer@example.com">
+                <label for="customerId">Your Email or ID</label>
+                <input type="text" id="customerId" placeholder="your-email@example.com" required>
             </div>
             
             <div class="form-group">
-                <label for="jobDescription">Website Requirements</label>
-                <textarea id="jobDescription" required placeholder="Describe your website requirements...
-
-Example:
-- 3 page website (Home, About, Contact)
-- Modern design with hero section
-- Contact form
-- Mobile responsive"></textarea>
+                <label for="jobDescription">Website Description</label>
+                <textarea id="jobDescription" placeholder="Describe the website you need... Include pages, features, design preferences, etc." required></textarea>
             </div>
             
             <div class="form-group">
-                <label>Design Mockups / Images (Optional)</label>
-                <div class="file-upload" id="fileUpload">
-                    <p>📎 Click to upload or drag and drop</p>
-                    <p style="font-size: 12px; color: #999; margin-top: 5px;">PNG, JPG up to 5MB each</p>
-                    <input type="file" id="fileInput" multiple accept="image/*">
+                <label>Attachments (Images, Mockups)</label>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📎</div>
+                    <div class="upload-text">
+                        <strong>Click to upload</strong> or drag and drop<br>
+                        <small>PNG, JPG, GIF up to 10MB each</small>
+                    </div>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
                 </div>
                 <div class="file-list" id="fileList"></div>
             </div>
             
-            <button type="submit" class="submit-btn" id="submitBtn">
-                Generate Website
-            </button>
+            <button type="submit" class="submit-btn" id="submitBtn">Generate Website</button>
         </form>
         
         <div class="status" id="status"></div>
@@ -262,29 +240,28 @@ Example:
 
     <script>
         const API_ENDPOINT = 'https://4mh4zy4oid.execute-api.us-east-1.amazonaws.com/prod/generate';
-        //const API_KEY = 'FkGowDz7e782CYybkjTv25ZO0ZkCTlCYthfLrGJj';
         
         let selectedFiles = [];
         
-        // File upload handling
-        const fileUpload = document.getElementById('fileUpload');
+        // Upload area interactions
+        const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const fileList = document.getElementById('fileList');
         
-        fileUpload.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('click', () => fileInput.click());
         
-        fileUpload.addEventListener('dragover', (e) => {
+        uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            fileUpload.classList.add('dragover');
+            uploadArea.classList.add('dragover');
         });
         
-        fileUpload.addEventListener('dragleave', () => {
-            fileUpload.classList.remove('dragover');
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
         });
         
-        fileUpload.addEventListener('drop', (e) => {
+        uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
-            fileUpload.classList.remove('dragover');
+            uploadArea.classList.remove('dragover');
             handleFiles(e.dataTransfer.files);
         });
         
@@ -293,120 +270,125 @@ Example:
         });
         
         function handleFiles(files) {
-            Array.from(files).forEach(file => {
-                if (file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024) {
-                    selectedFiles.push(file);
-                    displayFile(file);
-                } else {
-                    alert(`${file.name} is not a valid image or exceeds 5MB`);
+            for (let file of files) {
+                if (file.size > 10 * 1024 * 1024) {
+                    showStatus('error', `File ${file.name} is too large (max 10MB)`);
+                    continue;
                 }
+                selectedFiles.push(file);
+            }
+            updateFileList();
+        }
+        
+        function updateFileList() {
+            fileList.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span class="file-name">${file.name} (${formatFileSize(file.size)})</span>
+                    <button type="button" class="file-remove" onclick="removeFile(${index})">Remove</button>
+                `;
+                fileList.appendChild(fileItem);
             });
         }
         
-        function displayFile(file) {
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                fileItem.innerHTML = `
-                    <img src="${e.target.result}" alt="${file.name}">
-                    <span class="file-name">${file.name}</span>
-                    <span class="file-size">${(file.size / 1024).toFixed(1)} KB</span>
-                    <button type="button" class="remove-file" onclick="removeFile('${file.name}')">Remove</button>
-                `;
-            };
-            reader.readAsDataURL(file);
-            
-            fileList.appendChild(fileItem);
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            updateFileList();
         }
         
-        window.removeFile = function(filename) {
-            selectedFiles = selectedFiles.filter(f => f.name !== filename);
-            renderFileList();
-        };
-        
-        function renderFileList() {
-            fileList.innerHTML = '';
-            selectedFiles.forEach(file => displayFile(file));
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
         }
         
         // Form submission
-        document.getElementById('jobForm').addEventListener('submit', async (e) => {
+        document.getElementById('websiteForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const submitBtn = document.getElementById('submitBtn');
-            const status = document.getElementById('status');
             const customerId = document.getElementById('customerId').value;
             const jobDescription = document.getElementById('jobDescription').value;
+            const submitBtn = document.getElementById('submitBtn');
             
-            // Show processing status
-            status.className = 'status processing';
-            status.style.display = 'block';
-            status.innerHTML = '<div class="spinner"></div><p>Processing your request... This may take up to 15 minutes.</p>';
             submitBtn.disabled = true;
+            showStatus('loading', '⏳ Processing your request... This may take 10-15 minutes.');
             
             try {
-                // Encode images to base64
+                // Convert files to base64
                 const attachments = await Promise.all(
-                    selectedFiles.map(file => new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                            const base64 = reader.result.split(',')[1];
-                            resolve({
-                                filename: file.name,
-                                content: base64,
-                                type: file.type
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    }))
+                    selectedFiles.map(file => fileToBase64(file))
                 );
                 
-                // Send request
+                // Submit to API
                 const response = await fetch(API_ENDPOINT, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
+                        customer_id: customerId,
                         job_description: jobDescription,
-                        attachments: attachments,
-                        customer_id: customerId
+                        attachments: attachments
                     })
                 });
                 
                 const result = await response.json();
                 
-                if (response.ok) {
-                    // Success
-                    status.className = 'status success';
-                    let html = `
-                        <h3>✅ Website Generated Successfully!</h3>
-                        <p><strong>Request ID:</strong> ${result.request_id}</p>
-                        <p><strong>Project ID:</strong> ${result.project_id}</p>
-                    `;
-                    
-                    if (result.files && Object.keys(result.files).length > 0) {
-                        html += '<div class="download-links"><h4>Download Your Website:</h4>';
-                        for (const [filename, url] of Object.entries(result.files)) {
-                            html += `<a href="${url}" class="download-link" target="_blank">📄 ${filename}</a>`;
-                        }
-                        html += `</div><p style="margin-top: 10px; font-size: 12px; color: #666;">Links expire in ${result.expires_in}</p>`;
-                    }
-                    
-                    status.innerHTML = html;
-                } else {
-                    throw new Error(result.error || 'Unknown error');
+                if (!response.ok) {
+                    throw new Error(result.error || 'Request failed');
                 }
                 
+                // Show success with download links
+                let message = `✅ Website generated successfully!<br><br>`;
+                message += `<strong>Project ID:</strong> ${result.project_id}<br><br>`;
+                message += `<strong>Download your files:</strong>`;
+                message += `<div class="download-links">`;
+                
+                for (const [filename, url] of Object.entries(result.files)) {
+                    message += `<a href="${url}" class="download-link" target="_blank">📄 ${filename}</a>`;
+                }
+                
+                message += `</div>`;
+                message += `<small>Links expire in ${result.expires_in}</small>`;
+                
+                showStatus('success', message);
+                
+                // Reset form
+                document.getElementById('websiteForm').reset();
+                selectedFiles = [];
+                updateFileList();
+                
             } catch (error) {
-                status.className = 'status error';
-                status.innerHTML = `<h3>❌ Error</h3><p>${error.message}</p>`;
+                showStatus('error', `❌ Error: ${error.message}`);
             } finally {
                 submitBtn.disabled = false;
             }
         });
+        
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    resolve({
+                        filename: file.name,
+                        content: base64,
+                        type: file.type
+                    });
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function showStatus(type, message) {
+            const status = document.getElementById('status');
+            status.className = `status ${type}`;
+            status.innerHTML = message;
+            status.style.display = 'block';
+        }
     </script>
 </body>
 </html>
