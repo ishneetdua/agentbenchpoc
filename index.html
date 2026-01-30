@@ -341,12 +341,14 @@
                 }
                 
                 // Show success with the generated prompt
-                let message = `✅ Prompt generated successfully!<br><br>`;
-                message += `<strong>Request ID:</strong> ${result.request_id}<br><br>`;
-                message += `<strong>Generated Prompt:</strong><br>`;
+                let message = `✅ Website generation started!<br><br>`;
+                message += `<strong>Request ID:</strong> ${result.request_id}<br>`;
+                message += `<strong>Status:</strong> ${result.message}<br>`;
+                message += `<strong>Estimated Time:</strong> ${result.estimated_time || '10-15 minutes'}<br><br>`;
+                message += `<strong>Prompt Used:</strong><br>`;
                 message += `<div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin-top: 10px; max-height: 400px; overflow-y: auto; text-align: left; white-space: pre-wrap; font-family: monospace; font-size: 12px;" id="promptText">${result.prompt || 'No prompt generated'}</div>`;
                 message += `<button onclick="copyPrompt()" style="margin-top: 10px; padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">📋 Copy Prompt</button>`;
-                message += `<br><br><small>${result.instructions || ''}</small>`;
+                message += `<br><br><small>💌 You will receive an email notification with download links when your website is ready.</small>`;
                 
                 showStatus('success', message);
                 
