@@ -340,18 +340,12 @@
                     throw new Error(result.error || 'Request failed');
                 }
                 
-                // Show success with download links
-                let message = `✅ Website generated successfully!<br><br>`;
-                message += `<strong>Project ID:</strong> ${result.project_id}<br><br>`;
-                message += `<strong>Download your files:</strong>`;
-                message += `<div class="download-links">`;
-                
-                for (const [filename, url] of Object.entries(result.files)) {
-                    message += `<a href="${url}" class="download-link" target="_blank">📄 ${filename}</a>`;
-                }
-                
-                message += `</div>`;
-                message += `<small>Links expire in ${result.expires_in}</small>`;
+                // Show success with the generated prompt
+                let message = `✅ Prompt generated successfully!<br><br>`;
+                message += `<strong>Request ID:</strong> ${result.request_id}<br><br>`;
+                message += `<strong>Generated Prompt:</strong><br>`;
+                message += `<div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin-top: 10px; max-height: 400px; overflow-y: auto; text-align: left; white-space: pre-wrap; font-family: monospace; font-size: 12px;">${result.prompt}</div>`;
+                message += `<br><small>${result.instructions}</small>`;
                 
                 showStatus('success', message);
                 
